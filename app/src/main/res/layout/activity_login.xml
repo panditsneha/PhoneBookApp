@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:lottie_fileName="people-with-mobile-phones.json"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/slackey"
+        android:padding="5dp"
+        android:text="PhoneBook App"
+        android:textSize="38dp"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:id="@+id/phno"
+        android:paddingLeft="25dp"
+        android:layout_width="350dp"
+        android:inputType="phone"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:paddingRight="10dp"
+        android:hint="Phone No."
+        android:textSize="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/border"/>
+    <EditText
+        android:id="@+id/password"
+        android:paddingLeft="25dp"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:inputType="textPassword"
+        android:paddingBottom="15dp"
+        android:paddingRight="10dp"
+        android:hint="Password"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/border"/>
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_curved"
+        android:layout_marginTop="30dp"
+        android:text="Login"
+        android:textColor="@color/white"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"/>
+
+    <TextView
+        android:id="@+id/register_text"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Don't have an account? Register Here"
+        android:textColor="@color/purple_700"
+        />
+
+
+</LinearLayout>

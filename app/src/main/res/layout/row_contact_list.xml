@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="5dp"
+    app:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:foregroundGravity="center"
+        android:id="@+id/relativeLayout">
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/image_view"
+            android:layout_marginTop="1dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/contact_icon"/>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginRight="10dp"
+            android:layout_toEndOf="@id/image_view"
+            android:layout_toRightOf="@id/image_view"
+            android:fontFamily="@font/architects_daughter"
+            android:text="Name"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="10dp"
+            android:layout_toEndOf="@id/image_view"
+            android:layout_toRightOf="@id/image_view"
+            android:fontFamily="sans-serif-light"
+            android:text="Number" />
+
+        <ImageView
+            android:id="@+id/callButton"
+            android:layout_marginTop="8dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/phonecall" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

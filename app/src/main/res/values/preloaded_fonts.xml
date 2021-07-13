@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/</item>
+        <item>@font/actor</item>
+        <item>@font/advent_pro_thin</item>
+        <item>@font/aladin</item>
+        <item>@font/alegreya_sans_thin</item>
+        <item>@font/architects_daughter</item>
+        <item>@font/artifika</item>
+        <item>@font/asul</item>
+        <item>@font/cairo_extralight</item>
+        <item>@font/cherry_cream_soda</item>
+        <item>@font/chewy</item>
+        <item>@font/chivo</item>
+        <item>@font/cutive_mono</item>
+        <item>@font/happy_monkey</item>
+        <item>@font/jura_light</item>
+        <item>@font/nova_cut</item>
+        <item>@font/slackey</item>
+        <item>@font/trade_winds</item>
+        <item>@font/varela_round</item>
+    </array>
+</resources>
