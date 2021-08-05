@@ -32,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -64,7 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
 
         if(fAuth.getCurrentUser() != null){
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            startActivity(new Intent(getApplicationContext(), FirstActivity.class));
             finish();
         }
 
@@ -147,7 +148,7 @@ public class RegisterActivity extends AppCompatActivity {
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                startActivity(new Intent(getApplicationContext(),FirstActivity.class));
             }
         });
 

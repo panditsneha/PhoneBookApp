@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/speedDial"
-        android:title="Add To SpeedDial"/>
+        android:id="@+id/fav"
+        android:title="Add To SpeedDial"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_baseline_favorite_border_24"/>
     <item
-        android:id="@+id/calllogs"
+        android:id="@+id/remove"
         android:title="Remove"/>
     <item
         android:id="@+id/share"

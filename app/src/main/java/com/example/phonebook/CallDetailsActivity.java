@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.app.Activity;
@@ -47,6 +48,7 @@ public class CallDetailsActivity extends AppCompatActivity {
     Button editProfile,call,message;
     CircularImageView contactImage;
     Uri imageUrl;
+    boolean flag=false;
     private DatabaseReference dataRef;
     private FirebaseAuth mAuth;
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS=0;
@@ -178,12 +180,31 @@ public class CallDetailsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.search:break;
-            case R.id.calllogs:break;
+            case R.id.fav:speedDial();
+                        break;
+            case R.id.remove:break;
             case R.id.share:break;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    public void speedDial(){
+
+        //Kartik yeh dekh le...yeh intent kr rhi FragmentFav fragment me
+
+        String name = getIntent().getStringExtra("name");
+        String contact = getIntent().getStringExtra("contacts");
+
+        FragmentFav objects = new FragmentFav();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+        Bundle newBundle = new Bundle();
+        newBundle.putString("con_name",name);
+        newBundle.putString("con_number",contact);
+
+        objects.setArguments(newBundle);
+        fragmentTransaction.add(R.id.fragment_grid, objects).commit();
+
+    }
 
 }

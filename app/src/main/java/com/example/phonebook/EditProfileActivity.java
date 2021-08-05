@@ -180,6 +180,7 @@ public class EditProfileActivity extends AppCompatActivity {
             final  StorageReference fileRef = storageProfilePicRef.child(mAuth.getCurrentUser().getUid()+".jpg");
 
             uploadTask = fileRef.putFile(imageUri);
+
             uploadTask.continueWithTask(new Continuation() {
                 @Override
                 public Object then(@NonNull Task task) throws Exception {
