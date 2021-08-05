@@ -34,6 +34,7 @@ public class FragmentContact extends Fragment {
     private RecyclerView recyclerView;
     private ArrayList<Model> model = new ArrayList<Model>();
     Cursor cursor;
+    RecycleViewAdapter recycleViewAdapter;
 
     public FragmentContact() {
     }
@@ -72,9 +73,6 @@ public class FragmentContact extends Fragment {
         Uri uri = ContactsContract.Contacts.CONTENT_URI;
         String sort = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME;
 
-
-
-
         if (uri != null) {
             cursor = getActivity().getContentResolver().query(uri, null, null, null, sort);
         }
@@ -104,6 +102,30 @@ public class FragmentContact extends Fragment {
                 }
             }
             cursor.close();
+        }
+    }
+
+    public void filter(String text) {
+        // creating a new array list to filter our data.
+        ArrayList<Model> filteredlist = new ArrayList<>();
+
+        // running a for loop to compare elements.
+        for (Model item : model) {
+            // checking if the entered string matched with any item of our recycler view.
+            if (item.getName().toLowerCase().contains(text.toLowerCase())) {
+                // if the item is matched we are
+                // adding it to our filtered list.
+                filteredlist.add(item);
+            }
+        }
+        if (filteredlist.isEmpty()) {
+            // if no item is added in filtered list we are
+            // displaying a toast message as no data found.
+            Toast.makeText(getActivity(), "No Data Found..", Toast.LENGTH_SHORT).show();
+        } else {
+            // at last we are passing that filtered
+            // list to our adapter class.
+            recycleViewAdapter.filterList(filteredlist);
         }
     }
 

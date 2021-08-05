@@ -36,7 +36,6 @@
                 android:id="@+id/editContactImage"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/contact_icon"
                 app:civ_border_width="1dp"
                 app:civ_border_color="@color/lightBlackoption"
                 android:layout_marginLeft="60dp"/>
@@ -55,6 +54,7 @@
         <EditText
             android:layout_marginTop="20dp"
             android:inputType="text"
+            android:padding="10dp"
             android:id="@+id/editContactName"
             android:fontFamily="@font/jura_light"
             android:layout_width="wrap_content"
@@ -66,6 +66,7 @@
 
         <EditText
             android:inputType="text"
+            android:padding="10dp"
             android:layout_marginTop="10dp"
             android:id="@+id/editContactNumber"
             android:layout_width="wrap_content"
@@ -94,10 +95,15 @@
 
     </LinearLayout>
 
-
-
-
-
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_gravity="center_horizontal"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_upload"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="16dp" />
 
 
 </LinearLayout>

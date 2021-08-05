@@ -9,13 +9,6 @@
     android:gravity="center_horizontal">
 
 
-        <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/toolbar"
-            app:title="PhoneBook App"
-            app:titleMarginStart="25dp"/>
-
     <LinearLayout
         android:layout_width="380dp"
         android:layout_height="650dp"

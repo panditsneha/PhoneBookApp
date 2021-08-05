@@ -32,7 +32,7 @@ public class MessageActivity extends AppCompatActivity {
         send_sms = findViewById(R.id.send);
 
         sName = getIntent().getStringExtra("name");
-        this.name.setText(sName+sContact);
+        this.name.setText(sName);
 
         send_sms.setOnClickListener(new View.OnClickListener() {
             @Override

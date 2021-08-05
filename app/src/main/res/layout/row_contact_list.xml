@@ -22,26 +22,44 @@
             android:layout_height="50dp"
             android:src="@drawable/contact_icon"/>
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/nameids"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginRight="10dp"
-            android:layout_toEndOf="@id/image_view"
-            android:layout_toRightOf="@id/image_view"
-            android:fontFamily="@font/architects_daughter"
-            android:text="Name"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
+            android:orientation="horizontal"
+            android:layout_toRightOf="@id/image_view">
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginRight="10dp"
+                android:layout_toEndOf="@id/image_view"
+                android:layout_toRightOf="@id/image_view"
+                android:fontFamily="@font/architects_daughter"
+                android:text="Name"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+
+            <TextView
+                android:id="@+id/ids"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/name"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/black"
+                android:text="id"/>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/contact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/name"
+            android:layout_below="@id/nameids"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="2dp"
             android:layout_marginRight="10dp"

@@ -5,13 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-   >
+   android:layout_gravity="center"
+    android:gravity="center">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView3"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        tools:listitem="@layout/row_contact_list"/>
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_gravity="center"
+            android:id="@+id/recyclerView3"
+            android:layout_width="380dp"
+            android:layout_height="660dp"
+            android:background="@color/white"
+            tools:listitem="@layout/row_contact_list"/>
+
+    </LinearLayout>
+
+
 
 </RelativeLayout>

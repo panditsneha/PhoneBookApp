@@ -22,10 +22,10 @@
 
     <EditText
         android:id="@+id/message_text"
-        android:layout_width="370dp"
-        android:layout_height="300dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:layout_gravity="center"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="80dp"
         android:hint="Enter your text here..."
         android:gravity="center"
         android:background="@drawable/border"/>

@@ -27,7 +27,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -40,6 +47,8 @@ public class CallDetailsActivity extends AppCompatActivity {
     Button editProfile,call,message;
     CircularImageView contactImage;
     Uri imageUrl;
+    private DatabaseReference dataRef;
+    private FirebaseAuth mAuth;
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS=0;
 
     @Override
@@ -54,11 +63,16 @@ public class CallDetailsActivity extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.arrow_back);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        mAuth = FirebaseAuth.getInstance();
+        dataRef = FirebaseDatabase.getInstance().getReference().child("User");
+
         setIds();
         getStrings();
         callBut();
         editProfileIntent();
         messageBut();
+
+        getUserinfo();
     }
 
     public void callBut(){
@@ -81,6 +95,25 @@ public class CallDetailsActivity extends AppCompatActivity {
         });
     }
 
+    private void getUserinfo() {
+        dataRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists() && snapshot.getChildrenCount()>0){
+
+                    if(snapshot.hasChild("image")){
+                        String image = snapshot.child("image").getValue().toString();
+                        Picasso.get().load(image).into(contactImage);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
     public void messageBut(){
         message.setOnClickListener(new View.OnClickListener() {
@@ -105,9 +138,6 @@ public class CallDetailsActivity extends AppCompatActivity {
                 Intent i = new Intent(v.getContext(),EditProfileActivity.class);
                 i.putExtra("name",name);
                 i.putExtra("contacts",contact);
-//                contactImage.buildDrawingCache();
-//                Bitmap bitmap = contactImage.getDrawingCache();
-//                i.putExtra("BitmapImage", bitmap);
                 startActivity(i);
 
 

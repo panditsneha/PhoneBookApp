@@ -7,27 +7,44 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText mName,mEmail,mPassword,mPhNumber;
-    Button register;
-    TextView loginText;
-    private Dialog loadingDialog;
+    EditText mFullName,mEmail,mPassword,mPhone;
+    Button mRegisterBtn;
+    TextView mLoginBtn;
+    FirebaseAuth fAuth;
+    ProgressBar progressBar;
+    FirebaseFirestore fStore;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,144 +52,104 @@ public class RegisterActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_register);
 
-        mName=findViewById(R.id.name);
+        mFullName=findViewById(R.id.name);
         mEmail=findViewById(R.id.email);
         mPassword=findViewById(R.id.password);
-        mPhNumber=findViewById(R.id.phone_number);
-        register=findViewById(R.id.register);
-        loginText= findViewById(R.id.login_text);
+        mPhone=findViewById(R.id.phone_number);
+        mRegisterBtn=findViewById(R.id.register);
+        mLoginBtn= findViewById(R.id.login_text);
+
+        fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+        progressBar = findViewById(R.id.progressBar);
+
+        if(fAuth.getCurrentUser() != null){
+            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            finish();
+        }
 
 
-        final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        final DatabaseReference table_user = firebaseDatabase.getReference("User");
-
-        register.setOnClickListener(new View.OnClickListener() {
+        mRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final String email = mEmail.getText().toString().trim();
+                String password = mPassword.getText().toString().trim();
+                final String fullName = mFullName.getText().toString();
+                final String phone    = mPhone.getText().toString();
 
-                if(!username1()|!mobileno1()|!email1()|!password1()){
+                if(TextUtils.isEmpty(email)){
+                    mEmail.setError("Email is Required.");
                     return;
                 }
 
-                loadingDialog=new Dialog(RegisterActivity.this);
-                loadingDialog.setContentView(R.layout.activity_loading);
-                loadingDialog.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-                loadingDialog.setCancelable(false);
-                loadingDialog.show();
-                table_user.addValueEventListener(new ValueEventListener() {
+                if(TextUtils.isEmpty(password)){
+                    mPassword.setError("Password is Required.");
+                    return;
+                }
+
+                if(password.length() < 6){
+                    mPassword.setError("Password Must be >= 6 Characters");
+                    return;
+                }
+
+                progressBar.setVisibility(View.VISIBLE);
+
+                // register the user in firebase
+
+                fAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.child(mPhNumber.getText().toString()).exists()){
-                            loadingDialog.dismiss();
-                            mPhNumber.setError("Mobile no. Already Exists");
-                        }else{
-                            loadingDialog.dismiss();
-                            User user = new User(mName.getText().toString(),mPassword.getText().toString(),mEmail.getText().toString());
-                            table_user.child(mPhNumber.getText().toString()).setValue(user);
-                            Toast.makeText(RegisterActivity.this,"Registered Successfully",Toast.LENGTH_SHORT).show();
-                            Intent intent=new Intent(getBaseContext(),LoginActivity.class);
-                            startActivity(intent);
-                            finish();
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+
+                            // send verification link
+
+                            FirebaseUser fuser = fAuth.getCurrentUser();
+                            fuser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(RegisterActivity.this, "Verification Email Has been Sent.", Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                }
+                            });
+
+                            Toast.makeText(RegisterActivity.this, "User Created.", Toast.LENGTH_SHORT).show();
+                            userID = fAuth.getCurrentUser().getUid();
+                            DocumentReference documentReference = fStore.collection("users").document(userID);
+                            Map<String,Object> user = new HashMap<>();
+                            user.put("fName",fullName);
+                            user.put("email",email);
+                            user.put("phone",phone);
+                            documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+//                                    Log.d(TAG, "onSuccess: user Profile is created for "+ userID);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+//                                    Log.d(TAG, "onFailure: " + e.toString());
+                                }
+                            });
+                            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+
+                        }else {
+                            Toast.makeText(RegisterActivity.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
                         }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
                     }
                 });
             }
         });
 
-        loginText.setOnClickListener(new View.OnClickListener() {
+        mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-                startActivity(intent);
-                finish();
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
             }
         });
 
     }
-
-
-    private boolean username1(){
-        String name1=mName.getText().toString();
-        String noWhihteSpaces=("\\A\\w{4,20}\\z");
-
-        if(name1.isEmpty()){
-            mName.setError("Field cannot be empty");
-            return false;
-        }else if(name1.length()>15){
-            mName.setError("Username should be less than 15 characters");
-            return false;
-        }else if(!name1.matches(noWhihteSpaces)){
-            mName.setError("Username cannot carry such characters or spaces");
-            return false;
-        }
-        else
-            mName.setError(null);
-        return true;
-    }
-
-    private boolean mobileno1(){
-        String name2=mPhNumber.getText().toString();
-        int i,r=0;
-        if(name2.isEmpty()){
-            mPhNumber.setError("Fields cannot be empty");
-            return false;
-        }else if(name2.length()>10||name2.length()<10){
-            mPhNumber.setError("Mobile no. should be of 10 characters");
-            return false;
-        }
-        else if(1==1) {
-            for (i = 0; i < name2.length(); i++) {
-                Boolean flag = Character.isDigit(name2.charAt(i));
-                if (flag) {
-                    r=r+1;
-                }
-            }
-            if(r!=10){
-                mPhNumber.setError("Mobile no. should be an integer");
-                return false;
-            }
-        }
-        else
-            mPhNumber.setError(null);
-        return true;
-    }
-
-    private boolean email1(){
-        String name2=mEmail.getText().toString();
-        String emailPattern=("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+");
-        if(name2.isEmpty()){
-            mEmail.setError("Fields cannot be empty");
-            return false;
-        }else if(name2.length()>45){
-            mEmail.setError("Email should be less than 45 characters");
-            return false;
-        }else if(!name2.matches(emailPattern)){
-            mEmail.setError("Email cannot carry such characters or spaces");
-            return false;
-        }
-        else
-            mEmail.setError(null);
-        return true;
-    }
-
-    private boolean password1(){
-        String name2=mPassword.getText().toString();
-        if(name2.isEmpty()){
-            mPassword.setError("Fields cannot be empty");
-            return false;
-        }else if(name2.length()>18){
-            mPassword.setError("Password should be less than 18 characters");
-            return false;
-        }
-        else
-            mPassword.setError(null);
-        return true;
-    }
-
-
 }

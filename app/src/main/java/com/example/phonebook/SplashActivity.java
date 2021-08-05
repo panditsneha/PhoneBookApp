@@ -19,22 +19,9 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                SharedPreferences sharedPreferences = getSharedPreferences("MyPrefFile",0);
-                boolean hasLoggedIn = sharedPreferences.getBoolean("hasLoggedIn",false);
-
                 Intent intent = new Intent(SplashActivity.this,RegisterActivity.class);
                 startActivity(intent);
                 finish();
-
-//                if(hasLoggedIn){
-//                    Intent intent = new Intent(SplashActivity.this,FirstActivity.class);
-//                    startActivity(intent);
-//                    finish();
-//                }else{
-//                    Intent intent = new Intent(SplashActivity.this,RegisterActivity.class);
-//                    startActivity(intent);
-//                    finish();
-//                }
             }
         },SPLASH_TIME_OUT);
     }

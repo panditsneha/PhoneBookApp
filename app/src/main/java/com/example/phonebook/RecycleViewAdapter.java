@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> implements Filterable {
+public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> {
 
     //Activity activity;
     Context context;
@@ -51,6 +51,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         Model m = model.get(position);
         holder.name.setText(m.getName());
         holder.contact.setText(m.getContact());
+        holder.id.setText(String.valueOf(m.getId()));
         holder.callButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,23 +65,29 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
                     Intent i = new Intent(Intent.ACTION_CALL);
                     i.setData(Uri.parse(s));
                     view.getContext().startActivity(i);
-
                 }
-
             }
         });
 
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Model m = model.get(position);
                 Intent i = new Intent(v.getContext(),CallDetailsActivity.class);
                 i.putExtra("name",m.getName());
                 i.putExtra("contacts" ,m.getContact());
                 v.getContext().startActivity(i);
             }
         });
+    }
 
-
+    public void filterList(ArrayList<Model> filterlist) {
+        // below line is to add our filtered
+        // list in our course array list.
+        model = filterlist;
+        // below line is to notify our adapter
+        // as change in recycler view data.
+        notifyDataSetChanged();
     }
 
     @Override
@@ -88,50 +95,22 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         return model == null ? 0 : model.size();
     }
 
-    @Override
-    public Filter getFilter() {
-        return filter;
-    }
 
-    Filter filter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            ArrayList<Model> filteredList = new ArrayList<>();
-            if(constraint.toString().isEmpty()){
-                filteredList.addAll(modelAll);
-            }else{
-                for(Model contactName : modelAll){
-                    if(contactName.getName().toLowerCase().contains(constraint.toString().toLowerCase())){
-                        filteredList.add(contactName);
-                    }
-                }
-            }
 
-            FilterResults filterResults = new FilterResults();
-            filterResults.values = filteredList;
-
-            return filterResults;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            model.clear();
-            modelAll.addAll((Collection<? extends Model>) results.values);
-            notifyDataSetChanged();
-        }
-    };
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name, contact;
-        ImageView callButton;
+        TextView name, contact,id;
+        ImageView callButton,contactImageView;
         RelativeLayout relativeLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            contactImageView=itemView.findViewById(R.id.image_view);
             callButton = itemView.findViewById(R.id.callButton);
             name = itemView.findViewById(R.id.name);
             contact = itemView.findViewById(R.id.contact);
             relativeLayout = itemView.findViewById(R.id.relativeLayout);
+            id=itemView.findViewById(R.id.ids);
         }
 
     }

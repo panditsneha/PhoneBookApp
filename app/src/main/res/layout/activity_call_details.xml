@@ -21,7 +21,6 @@
         android:id="@+id/contactImage"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/contact_icon"
         android:translationY="-30dp"
         app:civ_border_width="1dp"
         app:civ_border_color="@color/lightBlackoption"
@@ -52,7 +51,7 @@
 
         <TextView
             android:id="@+id/contactName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="40dp"
